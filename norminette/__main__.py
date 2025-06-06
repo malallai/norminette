@@ -143,8 +143,7 @@ def main():
             sys.exit(1)
     errors = format(files, use_colors=not args.no_colors)
     print(errors, end="")
-    has_errors = any(file.errors for file in files)
-    sys.exit(1 if has_errors else 0)
+    sys.exit(1 if any(len(it.errors) for it in files) else 0)
 
 
 if __name__ == "__main__":
