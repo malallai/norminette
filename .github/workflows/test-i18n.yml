@@ -9,7 +9,27 @@ on:
       - master
 
 jobs:
-  test-i18n:
+  test-i18n-9:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine poetry
+      - name: Install norminette package
+        run: |
+          poetry install
+      - name: Compile .mo files
+        run: |
+          poetry run python norminette/i18n.py
+
+  test-i18n-10:
 
     runs-on: ubuntu-latest
 
@@ -24,6 +44,9 @@ jobs:
         sudo apt-get update && sudo apt-get install -y gettext
         python -m pip install --upgrade pip
         pip install setuptools wheel twine poetry
+    - name: Install norminette package
+      run: |
+        poetry install
     - name: Compile .mo files
       run: |
-        python norminette/i18n.py
+        poetry run python norminette/i18n.py
